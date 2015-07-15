@@ -3,9 +3,7 @@ package com.udacity.gradle.builditbigger.backend;
 import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
 import com.google.api.server.spi.config.ApiNamespace;
-import com.udacity.gradle.builditbigger.jokesrepo.Jokes;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -27,10 +25,10 @@ import javax.inject.Named;
 public class JokeEndpoint {
 
     private static final Logger logger = Logger.getLogger(JokeEndpoint.class.getName());
-    public static List<Joke> jokeLiskt = new ArrayList<>();
+    public static List<Joke> jokeList;// = new ArrayList<>();
 
 
-    public List<String> jokes;
+   // public List<String> jokes;
 
 
     /**
@@ -46,6 +44,14 @@ public class JokeEndpoint {
         return null;
     }
 
+    @ApiMethod(name = "grabJoke")
+    public Joke grabJoke(@Named("joke") String joke) {
+        Joke response = new Joke();
+        response.setJoke(joke);
+        return response;
+    }
+
+
     /**
      * This inserts a new <code>Joke</code> object.
      *
@@ -54,26 +60,26 @@ public class JokeEndpoint {
      */
     @ApiMethod(name = "insertJoke")
     public Joke insertJoke(Joke joke) {
-        // TODO: Implement this function
+        jokeList.add(joke);
         logger.info("Calling insertJoke method");
         return joke;
     }
 
     @ApiMethod(name="getAllJokes")
       public List<Joke> getAllJokes() {
-        jokes=new Jokes().giveAllJokes();
-        for (String s:jokes){
+//if (!jokes.isEmpty()) jokes.clear();
+//        jokes=new Jokes().giveAllJokes();
+//        for (String s:jokes){
+//
+//         Joke   joke=new Joke();
+//            joke.setJoke(s);
+//            joke.setId(jokes.indexOf(s));
+//            jokeList.add(joke);
+//
+//        }
 
-         Joke   joke=new Joke();
-            joke.setJoke(s);
-            joke.setId(jokes.indexOf(s));
-            jokeLiskt.add(joke);
-
-        }
-
-        return jokeLiskt;
+        return jokeList;
     }
-
 
 
 }

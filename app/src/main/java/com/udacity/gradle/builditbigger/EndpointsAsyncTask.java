@@ -1,43 +1,45 @@
 package com.udacity.gradle.builditbigger;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
-import android.util.Log;
+import android.support.v4.util.Pair;
+import android.widget.Toast;
 
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.extensions.android.json.AndroidJsonFactory;
 import com.google.api.client.googleapis.services.AbstractGoogleClientRequest;
 import com.google.api.client.googleapis.services.GoogleClientRequestInitializer;
 import com.udacity.gradle.builditbigger.backend.jokeApi.JokeApi;
-import com.udacity.gradle.builditbigger.backend.jokeApi.model.Joke;
-import com.udacity.gradle.builditbigger.jokesrepo.Jokes;
+import com.udacity.gradle.builditbigger.jokesteller.JokeActivity;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 
-
 /**
  * Created by itl on 13/07/2015.
  */
-class EndpointsAsyncTask extends AsyncTask<Context, Void, List<Joke>> {
+public class EndpointsAsyncTask extends AsyncTask<Pair<Context, String>, Void, List<String>> {
 
     public AsyncResponse delegate = null;
     private static JokeApi myApiService = null;
-    private Context context;
-
-
-    public List<Joke> jokes = new ArrayList<Joke>();
+    public Context context;
+    public List<String> jokeList=new ArrayList<>();
+    private static final String EXTRA_JOKE = "joke_extra";
+    private Intent intent;
 
     public EndpointsAsyncTask(AsyncResponse delegate, Context context) {
         this.delegate = delegate;
-        this.context = context;
+        this.context = context;//.getApplicationContext();
     }
 
 
     @Override
-    protected List<Joke> doInBackground(Context... params) {
+    protected List<String> doInBackground(Pair<Context, String>... params) {
+
+
         if (myApiService == null) {  // Only do this once
             JokeApi.Builder builder = new JokeApi.Builder(AndroidHttp.newCompatibleTransport(),
                     new AndroidJsonFactory(), null)
@@ -55,16 +57,15 @@ class EndpointsAsyncTask extends AsyncTask<Context, Void, List<Joke>> {
 
             myApiService = builder.build();
         }
-
-
+        context = params[0].first;
+        String joke = params[0].second;
 
         try {
+          // jokeList = new ArrayList<>();
+            String newJoke = myApiService.grabJoke(joke).execute().getJoke();
+            jokeList.add(newJoke);
 
-            if(jokes!=null || !jokes.isEmpty()) jokes.clear();
-            new Jokes().giveAllJokes();
-            jokes = myApiService.getAllJokes().execute().getItems();
-            if (jokes != null) Log.e("JOKES FROM LIB", jokes.toString());
-            return jokes;
+            return jokeList;
 
         } catch (IOException e) {
 
@@ -73,14 +74,17 @@ class EndpointsAsyncTask extends AsyncTask<Context, Void, List<Joke>> {
     }
 
     @Override
-    protected void onPostExecute(List<Joke> result) {
+    protected void onPostExecute(List<String> result) {
+
+        super.onPostExecute(result);
+        Toast.makeText(context, result.get(0), Toast.LENGTH_LONG).show();
+      //  delegate.processFinish(result);
 
 
-        if (!result.isEmpty())
-            Log.e("Joke", result.get(0).getJoke());
+        intent = new Intent(context, JokeActivity.class);
 
-      //  Toast.makeText(context, result.get(0).getJoke(), Toast.LENGTH_LONG).show();
-        delegate.processFinish(result);
+        intent.putStringArrayListExtra(EXTRA_JOKE, (ArrayList<String>) result);
+        context.startActivity(intent);
 
 
     }

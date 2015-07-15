@@ -1,15 +1,15 @@
 package com.udacity.gradle.builditbigger;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.util.Pair;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.udacity.gradle.builditbigger.backend.jokeApi.model.Joke;
-import com.udacity.gradle.builditbigger.jokesteller.JokeActivity;
+import com.udacity.gradle.builditbigger.jokesrepo.Jokes;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,16 +17,17 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements AsyncResponse {
     private static final String EXTRA_JOKE = "joke_extra";
-    //    public static List<Joke> dataFromAsyncTask;
-    public EndpointsAsyncTask asyncTask;
-    private ArrayList<String> jokeList;
 
+    public  List<String> jokeList=new ArrayList<>();
+    public Jokes jokeLibrary;
+    public String returnedString;
+    public Intent intent;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //asyncTask.delegate = this;
+
         setContentView(R.layout.activity_main);
     }
 
@@ -55,29 +56,27 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
     }
 
     public void tellJoke(View view) {
+        jokeLibrary = new Jokes();
 
-        asyncTask = new EndpointsAsyncTask(this, this);
-        asyncTask.execute();
+
+        for (String joke : jokeLibrary.giveAllJokes()) {
+            new EndpointsAsyncTask(this, this).execute(new Pair<Context, String>(this, joke));
+
+        }
 
     }
 
     @Override
-    public void processFinish(List<Joke> output) {
+    public void processFinish(List<String> output) {
 
 
-        jokeList = new ArrayList<>();
-
-
-        String myJoke = output.get(0).getJoke();
-        Log.e("async", myJoke);
-        for (Joke outputJoke : output) {
-            jokeList.add(outputJoke.getJoke());
-
-        }
-        Intent intent = new Intent(this, JokeActivity.class);
-
-        intent.putStringArrayListExtra(EXTRA_JOKE, jokeList);
-        startActivity(intent);
+        //Make a list here. Start intent from here
+//        jokeList = new ArrayList<>();
+//        jokeList.add(output);
+//        intent = new Intent(this, JokeActivity.class);
+//
+//        intent.putStringArrayListExtra(EXTRA_JOKE, output);
+//        startActivity(intent);
 
 
     }

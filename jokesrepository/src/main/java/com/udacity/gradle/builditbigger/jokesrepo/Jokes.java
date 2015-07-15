@@ -6,13 +6,16 @@ package com.udacity.gradle.builditbigger.jokesrepo;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Jokes  {
+public class Jokes {
 
 
     public List<String> jokeList = new ArrayList<>();
 
-//Gotten here:http://thoughtcatalog.com/christopher-hudspeth/2013/09/50-terrible-quick-jokes-thatll-get-you-a-laugh-on-demand/
-  public   String[] jokes = new String[]{"It’s hard to explain puns to kleptomaniacs because they always take things literally.",
+
+    //Gotten here:http://thoughtcatalog.com/christopher-hudspeth/2013/09/50-terrible-quick-jokes-thatll-get-you-a-laugh-on-demand/
+
+
+    String[] testJokes = new String[]{"It’s hard to explain puns to kleptomaniacs because they always take things literally.",
             "A farmer in the field with his cows counted 196 of them, but when he rounded them up he had 200.",
             "What is Bruce Lee’s favorite drink? Wataaaaah!",
             "What does a nosey pepper do? Get jalapeño business.",
@@ -27,20 +30,14 @@ public class Jokes  {
             "A blind man walks into a bar. And a table. And a chair.",
             "Why don’t you ever see hippopotamus hiding in trees? Because they’re really good at it."};
 
-
-    public String tellAJoke() {
-
-        return ("Here is a wonderful joke");
-
-
-    }
-
     public List<String> giveAllJokes() {
 
-        for(int i=0;i<jokes.length;i++)
-          jokeList.add(jokes[i])  ;
+        for (int i = 0; i < testJokes.length; i++){
 
-        return jokeList;
+           jokeList.add(testJokes[i]);
+
+        }
+       return jokeList;
     }
 
 

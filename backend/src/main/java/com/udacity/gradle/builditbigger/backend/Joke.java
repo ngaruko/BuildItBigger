@@ -1,16 +1,16 @@
 package com.udacity.gradle.builditbigger.backend;
 
 
-import org.parceler.Parcel;
 
-/**
- * Created by itl on 13/07/2015.
- */
-@Parcel
+
+import java.util.List;
+
+
 public class Joke {
 
     public  Integer id;
     public  String joke;
+    public List<Joke> jokeList;
 
 
     public Joke() {
@@ -39,9 +39,11 @@ public class Joke {
     }
 
 
-    //make it parcelable
+    public List<Joke> getJokeList() {
+        return jokeList;
+    }
 
-
-
-
+    public void setJokeList(List<Joke> jokeList) {
+        this.jokeList = jokeList;
+    }
 }

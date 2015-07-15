@@ -1,6 +1,6 @@
 {
  "kind": "discovery#restDescription",
- "etag": "\"u_zXkMELIlX4ktyNbM2XKD4vK8E/bSlnNMPw8DYaiTJh1j7E1rtlsvE\"",
+ "etag": "\"u_zXkMELIlX4ktyNbM2XKD4vK8E/VstbCD8zpeSOEg47jhEp-Z23l6A\"",
  "discoveryVersion": "v1",
  "id": "jokeApi:v1",
  "name": "jokeApi",
@@ -83,6 +83,12 @@
     },
     "joke": {
      "type": "string"
+    },
+    "jokeList": {
+     "type": "array",
+     "items": {
+      "$ref": "Joke"
+     }
     }
    }
   },
@@ -125,6 +131,27 @@
    },
    "parameterOrder": [
     "id"
+   ],
+   "response": {
+    "$ref": "Joke"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
+  "grabJoke": {
+   "id": "jokeApi.grabJoke",
+   "path": "joke/{joke}",
+   "httpMethod": "POST",
+   "parameters": {
+    "joke": {
+     "type": "string",
+     "required": true,
+     "location": "path"
+    }
+   },
+   "parameterOrder": [
+    "joke"
    ],
    "response": {
     "$ref": "Joke"

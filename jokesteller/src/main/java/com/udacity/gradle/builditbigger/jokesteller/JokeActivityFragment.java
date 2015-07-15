@@ -49,13 +49,15 @@ public class JokeActivityFragment extends Fragment {
 
 
 
-        }
+        } else {
 
-        Intent intent = getActivity().getIntent();
-        listJokes = intent.getStringArrayListExtra("joke_extra");
+            Intent intent = getActivity().getIntent();
+            listJokes = intent.getStringArrayListExtra("joke_extra");
+        }
 
         //update your Adapter to containg the retrieved jokes
         jokeAdapter.setJokeList(listJokes);
+
         return rootView;
 
     }

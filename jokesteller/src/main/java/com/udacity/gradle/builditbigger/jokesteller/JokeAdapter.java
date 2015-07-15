@@ -8,8 +8,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.udacity.gradle.builditbigger.backend.jokeApi.model.Joke;
-
 import java.util.ArrayList;
 
 /**
@@ -19,7 +17,7 @@ public class JokeAdapter extends RecyclerView.Adapter<JokeAdapter.ViewHolderJoke
 
     private LayoutInflater layoutInflater;
     public ArrayList<String> listJokes=new ArrayList<>();
-    private ArrayList<Joke> jokeList;
+
 
 
     public JokeAdapter(Context context) {
@@ -73,9 +71,6 @@ public class JokeAdapter extends RecyclerView.Adapter<JokeAdapter.ViewHolderJoke
 
         ImageView jokeIcon;
         TextView jokeText;
-
-
-
 
 
         public ViewHolderJokes(View itemView) {

@@ -31,9 +31,7 @@ dependencies {
     compile 'javax.servlet:servlet-api:2.5'
 
     compile 'com.google.appengine:appengine-api-1.0-sdk:1.9.18'
-    compile project(":jokesrepository")
 
-    compile "org.parceler:parceler-api:1.0.1"
 
 }
 
