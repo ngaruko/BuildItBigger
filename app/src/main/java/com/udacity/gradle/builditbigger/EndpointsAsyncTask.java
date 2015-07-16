@@ -1,9 +1,12 @@
 package com.udacity.gradle.builditbigger;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v4.util.Pair;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.google.api.client.extensions.android.http.AndroidHttp;
@@ -69,6 +72,8 @@ public class EndpointsAsyncTask extends AsyncTask<Pair<Context, String>, Void, L
 
         } catch (IOException e) {
 
+            Log.e("API ERROR",e.getMessage());
+
             return null;
         }
     }
@@ -77,15 +82,41 @@ public class EndpointsAsyncTask extends AsyncTask<Pair<Context, String>, Void, L
     protected void onPostExecute(List<String> result) {
 
         super.onPostExecute(result);
+
+
+        if (result == null) {
+            Toast.makeText(context, "SOMETHING WENT WRONG! ", Toast.LENGTH_LONG).show();
+
+            notifyUser("Connection Error", "Please check your network connections and/or your API Service and try again!");
+        }
+
+        else if (result.isEmpty())
+            Toast.makeText(context, "NO JOKES WERE FOUND! ", Toast.LENGTH_LONG).show();
+        else {
+
+
         Toast.makeText(context, result.get(0), Toast.LENGTH_LONG).show();
-      //  delegate.processFinish(result);
+        //  delegate.processFinish(result);
 
 
         intent = new Intent(context, JokeActivity.class);
 
         intent.putStringArrayListExtra(EXTRA_JOKE, (ArrayList<String>) result);
         context.startActivity(intent);
+    }
 
+    }
 
+    private void notifyUser(String title, String message) {
+        AlertDialog alertDialog = new AlertDialog.Builder(context).create();
+        alertDialog.setTitle(title);
+        alertDialog.setMessage(message);
+        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+        alertDialog.show();
     }
 }

@@ -5,9 +5,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.util.Pair;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.udacity.gradle.builditbigger.jokesrepo.Jokes;
 
@@ -19,7 +21,7 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
     private static final String EXTRA_JOKE = "joke_extra";
 
     public  List<String> jokeList=new ArrayList<>();
-    public Jokes jokeLibrary;
+    public List<String> jokeLibrary;
     public String returnedString;
     public Intent intent;
 
@@ -56,13 +58,25 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
     }
 
     public void tellJoke(View view) {
-        jokeLibrary = new Jokes();
 
 
-        for (String joke : jokeLibrary.giveAllJokes()) {
-            new com.udacity.gradle.builditbigger.EndpointsAsyncTask(this, this).execute(new Pair<Context, String>(this, joke));
+
+        jokeLibrary = new Jokes().giveAllJokes();
+
+        if (jokeLibrary==null){
+            Log.e("Nothing", "no data");
+            Toast.makeText(this, "NO JOKES WERE FOUND! ", Toast.LENGTH_LONG).show();
+        }
+
+
+       else {
+
+                            //String sjoke;
+                            new EndpointsAsyncTask(this, this).execute(new Pair<Context, String>(this, jokeLibrary.get(0)));
+
 
         }
+
 
     }
 

@@ -32,12 +32,19 @@ public class Jokes {
 
     public List<String> giveAllJokes() {
 
-        for (int i = 0; i < testJokes.length; i++){
+        if (testJokes!=null && testJokes.length>0)
 
-           jokeList.add(testJokes[i]);
+         {
+            for (int i = 0; i < testJokes.length; i++){
 
+               jokeList.add(testJokes[i]);
+
+            }
+            return jokeList;
+        } else {
+
+            return null;
         }
-       return jokeList;
     }
 
 
