@@ -82,7 +82,7 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     // Added for AdMob
     compile 'com.android.support:appcompat-v7:22.2.0'
-    compile 'com.google.android.gms:play-services-ads:7.5.0'
+    freeCompile 'com.google.android.gms:play-services-ads:7.5.0'
     compile project(path: ':backend', configuration: 'android-endpoints')
     compile project(':jokesrepository')
     compile project(':jokesteller')
@@ -90,9 +90,4 @@ dependencies {
     //    configurations {
     //        all*.exclude group: 'com.android.support', module: 'support-v4'
     //    }
-}
-
-task appStart(type: Exec) {
-
-    commandLine  'adb', 'shell', 'am', 'start', '-n', 'com.udacity.gradle.builditbigger/app.MainActivity'
 }

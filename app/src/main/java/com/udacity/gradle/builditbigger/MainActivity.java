@@ -20,7 +20,7 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
 
     public  List<String> jokeList=new ArrayList<>();
     public Jokes jokeLibrary;
-
+    public String returnedString;
     public Intent intent;
 
 
@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
 
 
         for (String joke : jokeLibrary.giveAllJokes()) {
-            new EndpointsAsyncTask(this, this).execute(new Pair<Context, String>(this, joke));
+            new com.udacity.gradle.builditbigger.EndpointsAsyncTask(this, this).execute(new Pair<Context, String>(this, joke));
 
         }
 
