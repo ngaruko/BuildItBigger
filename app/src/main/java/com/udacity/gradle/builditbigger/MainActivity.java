@@ -20,7 +20,7 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
 
     public  List<String> jokeList=new ArrayList<>();
     public Jokes jokeLibrary;
-    public String returnedString;
+
     public Intent intent;
 
 

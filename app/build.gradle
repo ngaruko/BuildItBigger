@@ -9,7 +9,7 @@ android {
             storePassword 'password'
         }
     }
-    compileSdkVersion 22
+    compileSdkVersion 21
     buildToolsVersion "22.0.1"
 
     defaultConfig {
@@ -33,6 +33,18 @@ android {
         }
 
 
+    }
+    productFlavors {
+        free {
+            applicationId "com.udacity.gradle.builditbigger.free"
+            signingConfig signingConfigs.config
+            //buildConfigField "ProductFlavour", "PRODUCT_FLAVOUR", "ProductFlavour.FREE"
+        }
+        paid {
+            applicationId "com.udacity.gradle.builditbigger.paid"
+            signingConfig signingConfigs.config
+           // buildConfigField "ProductFlavour", "PRODUCT_FLAVOUR", "ProductFlavour.PAID"
+        }
     }
 
 
@@ -74,9 +86,13 @@ dependencies {
     compile project(path: ':backend', configuration: 'android-endpoints')
     compile project(':jokesrepository')
     compile project(':jokesteller')
-
     compile 'org.parceler:parceler-api:1.0.1'
     //    configurations {
     //        all*.exclude group: 'com.android.support', module: 'support-v4'
     //    }
+}
+
+task appStart(type: Exec) {
+
+    commandLine  'adb', 'shell', 'am', 'start', '-n', 'com.udacity.gradle.builditbigger/app.MainActivity'
 }
