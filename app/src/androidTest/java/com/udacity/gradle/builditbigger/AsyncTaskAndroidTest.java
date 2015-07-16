@@ -1,5 +1,6 @@
 package com.udacity.gradle.builditbigger;
 
+import android.app.Activity;
 import android.support.v4.util.Pair;
 import android.test.AndroidTestCase;
 import android.util.Log;
@@ -11,8 +12,13 @@ import java.util.List;
  */
 public class AsyncTaskAndroidTest extends AndroidTestCase implements AsyncResponse {
 
+    public Activity activity;
     public   String TEST_STRING ;
     public String expectedOutput;
+
+    public AsyncTaskAndroidTest(Activity activity) {
+        this.activity = activity;
+    }
 
 
     @Override
@@ -26,7 +32,7 @@ public class AsyncTaskAndroidTest extends AndroidTestCase implements AsyncRespon
 
     public void testVerifyAsyncRetrievesString() throws Exception {
         Log.e("Delegate and Context:", this.toString() + getContext().toString());
-        new EndpointsAsyncTask(this, getContext()).execute(new Pair<>(getContext(), TEST_STRING));
+        new EndpointsAsyncTask(this,activity).execute(new Pair<>(activity, TEST_STRING));
 
         Thread.sleep(3000);
 

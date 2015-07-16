@@ -1,12 +1,13 @@
 package com.udacity.gradle.builditbigger;
 
+import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v4.util.Pair;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 import com.google.api.client.extensions.android.http.AndroidHttp;
@@ -24,23 +25,23 @@ import java.util.List;
 /**
  * Created by itl on 13/07/2015.
  */
-public class EndpointsAsyncTask extends AsyncTask<Pair<Context, String>, Void, List<String>> {
+public class EndpointsAsyncTask extends AsyncTask<Pair<Activity, String>, Void, List<String>> {
 
     public AsyncResponse delegate = null;
     private static JokeApi myApiService = null;
-    public Context context;
-    public List<String> jokeList=new ArrayList<>();
+    public Activity activity;
+    public List<String> jokeList = new ArrayList<>();
     private static final String EXTRA_JOKE = "joke_extra";
     private Intent intent;
 
-    public EndpointsAsyncTask(AsyncResponse delegate, Context context) {
+    public EndpointsAsyncTask(AsyncResponse delegate, Activity activity) {
         this.delegate = delegate;
-        this.context = context;//.getApplicationContext();
+        this.activity = new MainActivity();//.getApplicationContext();
     }
 
 
     @Override
-    protected List<String> doInBackground(Pair<Context, String>... params) {
+    protected List<String> doInBackground(Pair<Activity, String>... params) {
 
 
         if (myApiService == null) {  // Only do this once
@@ -60,11 +61,11 @@ public class EndpointsAsyncTask extends AsyncTask<Pair<Context, String>, Void, L
 
             myApiService = builder.build();
         }
-        context = params[0].first;
+        activity = params[0].first;
         String joke = params[0].second;
 
         try {
-          // jokeList = new ArrayList<>();
+            // jokeList = new ArrayList<>();
             String newJoke = myApiService.grabJoke(joke).execute().getJoke();
             jokeList.add(newJoke);
 
@@ -72,7 +73,7 @@ public class EndpointsAsyncTask extends AsyncTask<Pair<Context, String>, Void, L
 
         } catch (IOException e) {
 
-            Log.e("API ERROR",e.getMessage());
+            Log.e("API ERROR", e.getMessage());
 
             return null;
         }
@@ -83,32 +84,31 @@ public class EndpointsAsyncTask extends AsyncTask<Pair<Context, String>, Void, L
 
         super.onPostExecute(result);
 
-
+        activity.findViewById(R.id.progress_bar).setVisibility(View.INVISIBLE);
         if (result == null) {
-            Toast.makeText(context, "SOMETHING WENT WRONG! ", Toast.LENGTH_LONG).show();
+            Toast.makeText(activity, "SOMETHING WENT WRONG! ", Toast.LENGTH_LONG).show();
 
             notifyUser("Connection Error", "Please check your network connections and/or your API Service and try again!");
-        }
-
-        else if (result.isEmpty())
-            Toast.makeText(context, "NO JOKES WERE FOUND! ", Toast.LENGTH_LONG).show();
+        } else if (result.isEmpty())
+            Toast.makeText(activity, "NO JOKES WERE FOUND! ", Toast.LENGTH_LONG).show();
         else {
 
 
-        Toast.makeText(context, result.get(0), Toast.LENGTH_LONG).show();
-        //  delegate.processFinish(result);
+            Toast.makeText(activity, result.get(0), Toast.LENGTH_LONG).show();
+            //  delegate.processFinish(result);
 
 
-        intent = new Intent(context, JokeActivity.class);
+            intent = new Intent(activity, JokeActivity.class);
 
-        intent.putStringArrayListExtra(EXTRA_JOKE, (ArrayList<String>) result);
-        context.startActivity(intent);
+            intent.putStringArrayListExtra(EXTRA_JOKE, (ArrayList<String>) result);
+            activity.startActivity(intent);
+        }
+
     }
 
-    }
 
     private void notifyUser(String title, String message) {
-        AlertDialog alertDialog = new AlertDialog.Builder(context).create();
+        AlertDialog alertDialog = new AlertDialog.Builder(activity).create();
         alertDialog.setTitle(title);
         alertDialog.setMessage(message);
         alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",

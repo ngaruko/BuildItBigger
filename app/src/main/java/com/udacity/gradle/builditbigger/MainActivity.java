@@ -1,7 +1,6 @@
 package com.udacity.gradle.builditbigger;
 
-import android.content.Context;
-import android.content.Intent;
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.util.Pair;
 import android.support.v7.app.AppCompatActivity;
@@ -22,8 +21,6 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
 
     public  List<String> jokeList=new ArrayList<>();
     public List<String> jokeLibrary;
-    public String returnedString;
-    public Intent intent;
 
 
     @Override
@@ -59,7 +56,7 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
 
     public void tellJoke(View view) {
 
-
+            findViewById(R.id.progress_bar).setVisibility(View.VISIBLE);
 
         jokeLibrary = new Jokes().giveAllJokes();
 
@@ -72,7 +69,7 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
        else {
 
                             //String sjoke;
-                            new EndpointsAsyncTask(this, this).execute(new Pair<Context, String>(this, jokeLibrary.get(0)));
+                            new EndpointsAsyncTask(this, this).execute(new Pair<Activity, String>(this, jokeLibrary.get(0)));
 
 
         }
@@ -83,7 +80,7 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
     @Override
     public void processFinish(List<String> output) {
 
-
+Log.e("Out", "output");
         //Make a list here. Start intent from here
 //        jokeList = new ArrayList<>();
 //        jokeList.add(output);
